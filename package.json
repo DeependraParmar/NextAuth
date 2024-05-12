@@ -14,6 +14,9 @@
     "@prisma/client": "^5.13.0",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@zeit/next-css": "^1.0.1",
+    "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.378.0",
@@ -34,9 +37,12 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "bcrypt": "^5.1.1",
+    "css-loader": "^7.1.1",
     "eslint": "^8",
     "eslint-config-next": "14.2.3",
     "postcss": "^8",
+    "raw-loader": "^4.0.2",
+    "style-loader": "^4.0.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }
