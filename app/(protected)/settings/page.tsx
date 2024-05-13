@@ -11,7 +11,10 @@ const SettingsPage = async () => {
             <div>
                 <form action={async () => {
                     "use server";
-                    await signOut();
+                    await signOut({
+                        redirect: true,
+                        redirectTo: '/auth/login'
+                    });
                 }}>
                     <button type="submit">Logout</button>
                 </form>

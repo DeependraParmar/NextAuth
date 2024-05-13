@@ -4,6 +4,9 @@ import * as z from "zod";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma"; 
 import { getUserByEmail } from "@/data/user";
+import { signIn } from "@/auth";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { AuthError } from "next-auth";
 
 export const register = async(values: z.infer<typeof RegisterSchema>) => {
     const validatedFields = await RegisterSchema.safeParse(values);
@@ -25,7 +28,22 @@ export const register = async(values: z.infer<typeof RegisterSchema>) => {
         }
     });
 
-    // Todo: Send the verification mail here 
+    try{
+        await signIn('credentials', { email, password, redirectTo: DEFAULT_LOGIN_REDIRECT});
+    }
+    catch(error){
+        if (error instanceof AuthError) {
+            switch (error.type) {
+                case "CredentialsSignin":
+                    return { error: "Invalid Credentials !" }
+
+                default:
+                    return { error: 'Something went wrong !' }
+            }
+        }
+        console.log("Throwing error: ", error);
+        throw error;
+    }
 
     return { success: "Registered Successfully" }
 }
