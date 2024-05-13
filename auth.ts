@@ -32,6 +32,16 @@ export const {
             }
             return session;
         },
+        async signIn({user, account}){
+            if(account?.provider !== 'credentials') return true;
+            const existingUser = await getUserById(user?.id);
+            
+            if(!existingUser?.emailVerified) return false;
+
+            // TODO: Add 2FA check
+
+            return true;
+        }
     },
     events: {
         async linkAccount({user}){

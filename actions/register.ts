@@ -1,12 +1,10 @@
 "use server";
-import { RegisterSchema } from "@/schemas";
-import * as z from "zod";
-import bcrypt from "bcryptjs";
-import { prisma } from "@/lib/prisma"; 
 import { getUserByEmail } from "@/data/user";
-import { signIn } from "@/auth";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import { AuthError } from "next-auth";
+import { prisma } from "@/lib/prisma";
+import { generateVerificationToken } from "@/lib/tokens";
+import { RegisterSchema } from "@/schemas";
+import bcrypt from "bcryptjs";
+import * as z from "zod";
 
 export const register = async(values: z.infer<typeof RegisterSchema>) => {
     const validatedFields = await RegisterSchema.safeParse(values);
@@ -28,22 +26,7 @@ export const register = async(values: z.infer<typeof RegisterSchema>) => {
         }
     });
 
-    try{
-        await signIn('credentials', { email, password, redirectTo: DEFAULT_LOGIN_REDIRECT});
-    }
-    catch(error){
-        if (error instanceof AuthError) {
-            switch (error.type) {
-                case "CredentialsSignin":
-                    return { error: "Invalid Credentials !" }
+    const verificationToken = await generateVerificationToken(email);
 
-                default:
-                    return { error: 'Something went wrong !' }
-            }
-        }
-        console.log("Throwing error: ", error);
-        throw error;
-    }
-
-    return { success: "Registered Successfully" }
+    return { success: "Verification Mail Sent!" }
 }
