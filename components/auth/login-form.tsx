@@ -18,6 +18,11 @@ export const LoginForm = () => {
     const [error, setError] = useState<string | undefined>('');
     const [success, setSuccess] = useState<string | undefined>('');
 
+    interface DataProps{
+        error?: string | undefined;
+        success?: string | undefined;
+    }
+
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -31,9 +36,9 @@ export const LoginForm = () => {
         setSuccess('');
         startTransition(() => {
             login(values).then((data) => {
-                setError(data.error);
-                setSuccess(data.success);
-            })
+                setError(data?.error);
+                setSuccess(data?.success);
+            });
         });
     }
 

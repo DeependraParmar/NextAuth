@@ -6,7 +6,7 @@ import { AuthError } from "next-auth";
 import * as z from "zod";
 
 export const login = async(values: z.infer<typeof LoginSchema>) => {
-    const validadatedFields = await LoginSchema.safeParse(values);
+    const validadatedFields = LoginSchema.safeParse(values);
 
     if(!validadatedFields.success){
         return { error: "Invalid fields !"};
@@ -26,7 +26,9 @@ export const login = async(values: z.infer<typeof LoginSchema>) => {
                     return { error: 'Something went wrong !'}
             }
         }
-
+        console.log("Throwing error: ", error);
         throw error;
     }
+
+    return { success: "Logged-in successful"}
 }

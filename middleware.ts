@@ -4,7 +4,7 @@ import NextAuth from "next-auth";
 const { auth } = NextAuth(authConfig);
 import { DEFAULT_LOGIN_REDIRECT, apiAuthPrefix, authRoutes, publicRoutes } from "@/routes";
 
-export default auth((req) => {
+export default auth((req): void | Response | Promise<void | Response> => {
     const { nextUrl } = req;
     const isLoggedIn = !!req.auth;
 
@@ -13,19 +13,19 @@ export default auth((req) => {
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
     if(isAPIAuthRoute){
-        return null;
+        return Promise.resolve();
     }
     if(isAuthRoute){
         if(isLoggedIn){
             return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
         }
-        return null;
+        return Promise.resolve();
     }
     if(!isLoggedIn && !isPublicRoute){
-        return Response.redirect(new URL("/auth/login", nextUrl));
+        return Response.redirect(new URL(authRoutes[0], nextUrl));
     }
 
-    return null;
+    return Promise.resolve();
 }); 
 
 export const config = {

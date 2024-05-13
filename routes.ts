@@ -27,4 +27,4 @@ export const apiAuthPrefix = "/api/auth";
  * The default redirec path after logging in
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = 'settings';
+export const DEFAULT_LOGIN_REDIRECT = '/settings';
