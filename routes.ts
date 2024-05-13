@@ -12,7 +12,7 @@ export const publicRoutes = ['/'];
  * These are the routes that do need authentication and will redirect logged in users to /settings
  * @type {string[]}
  */
-export const authRoutes = ['/auth/login', '/auth/register'];
+export const authRoutes = ['/auth/login', '/auth/register', '/auth/error'];
 
 
 /**

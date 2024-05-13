@@ -30,10 +30,21 @@ export const {
             if(token.role && session.user){
                 session.user.role = token.role as UserRole;
             }
-            console.log({sessionToken: token});
             return session;
         },
     },
+    events: {
+        async linkAccount({user}){
+            await prisma.user.update({
+                where: {id: user.id},
+                data: { emailVerified: new Date()}
+            });
+        }
+    },
+    pages: {
+        signIn: '/auth/login',
+        error: '/auth/error',
+    },  
     adapter: PrismaAdapter(prisma),
     session: { strategy: "jwt"},
     ...authConfig,
